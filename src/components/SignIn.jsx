@@ -11,7 +11,8 @@ import {
   Typography,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Login } from "../api/consumer";
 
 function Copyright(props) {
   return (
@@ -32,13 +33,12 @@ function Copyright(props) {
 }
 
 export default function SignIn() {
+  const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    Login(data.get("email"), data.get("password"));
+    navigate("/");
   };
 
   return (
