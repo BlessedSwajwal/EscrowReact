@@ -1,17 +1,19 @@
-import { useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 export const useAuth = () => {
-  const history = useHistory();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const handleStorage = () => {
-      const isLoggedIn = localStorage.getItem("isLoggedIn");
+      const isLoggedIn = localStorage.getItem("auth-token");
       if (!isLoggedIn) {
-        history.push("/login");
+        setIsLoggedIn(false);
+      } else {
+        setIsLoggedIn(true);
       }
     };
     window.addEventListener("storage", handleStorage);
     return () => window.removeEventListener("storage", handleStorage);
-  }, [history]);
+  }, []);
+  return isLoggedIn;
 };

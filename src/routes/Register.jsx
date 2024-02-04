@@ -11,9 +11,20 @@ import {
   Typography,
 } from "@mui/material";
 import { LockOutlined } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/auth";
+import { useEffect } from "react";
 
 function Register() {
+  let loggedIn = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (loggedIn) {
+      //TODO
+    }
+  }, [loggedIn, navigate]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);

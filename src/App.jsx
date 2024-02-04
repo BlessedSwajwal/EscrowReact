@@ -1,9 +1,9 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import LandingNavBar from "./components/LandingNavBar";
 import LandingPage from "./routes/LandingPage";
-import SignIn from "./components/SignIn";
+import SignIn from "./routes/SignIn";
 import Error from "./routes/error";
-import Register from "./components/Register";
+import Register from "./routes/Register";
 const router = createBrowserRouter([
   {
     path: "/",
