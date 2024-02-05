@@ -13,6 +13,8 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Link, useNavigate } from "react-router-dom";
 import { Login } from "../api/consumer";
+import { useAuth } from "../hooks/auth";
+import { useEffect } from "react";
 
 function Copyright(props) {
   return (
@@ -33,12 +35,19 @@ function Copyright(props) {
 }
 
 export default function SignIn() {
+  let loggedIn = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (loggedIn) {
+      navigate("/");
+    }
+  }, [loggedIn, navigate]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     Login(data.get("email"), data.get("password"));
-    navigate("/");
   };
 
   return (
