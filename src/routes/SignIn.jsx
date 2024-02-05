@@ -16,31 +16,13 @@ import { Login } from "../api/consumer";
 import { useAuth } from "../hooks/auth";
 import { useEffect } from "react";
 
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="#">
-        Escrow App
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
 export default function SignIn() {
   let loggedIn = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (loggedIn) {
-      navigate("/");
+      navigate("/Consumer");
     }
   }, [loggedIn, navigate]);
 
@@ -114,5 +96,23 @@ export default function SignIn() {
       </Box>
       <Copyright sx={{ mt: 8, mb: 4 }} />
     </Container>
+  );
+}
+
+function Copyright(props) {
+  return (
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Copyright © "}
+      <Link color="inherit" href="#">
+        Escrow App
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
   );
 }

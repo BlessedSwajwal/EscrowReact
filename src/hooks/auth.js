@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 
 //Custom hook that will return isLoggedIn everytime token is removed from the browser.
 export const useAuth = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  const token = localStorage.getItem("auth-token");
+  const [isLoggedIn, setIsLoggedIn] = useState(token ? true : false);
   useEffect(() => {
     const handleStorage = () => {
       const isLoggedIn = localStorage.getItem("auth-token");

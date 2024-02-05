@@ -4,6 +4,8 @@ import LandingPage from "./routes/LandingPage";
 import SignIn from "./routes/SignIn";
 import Error from "./routes/error";
 import Register from "./routes/Register";
+
+import ConsumerHome from "./routes/Consumer/ConsumerHome";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -18,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: "register",
         element: <Register />,
+      },
+      {
+        path: "Consumer",
+        element: <ConsumerHome />,
       },
     ],
   },
