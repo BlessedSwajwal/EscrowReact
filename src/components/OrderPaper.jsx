@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Paper, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const OrderPaper = ({ order }) => {
   return (
@@ -13,7 +14,9 @@ const OrderPaper = ({ order }) => {
         borderRadius: 7,
       }}
     >
-      <Typography variant="h4">{order.name}</Typography>
+      <Link to={`/order/${order.id}`}>
+        <Typography variant="h4">{order.name}</Typography>
+      </Link>
       <Typography>{order.description}</Typography>
     </Paper>
   );

@@ -4,8 +4,10 @@ import LandingPage from "./routes/LandingPage";
 import SignIn from "./routes/SignIn";
 import Error from "./routes/error";
 import Register from "./routes/Register";
+import { loader as orderLoader } from "./routes/order";
 
 import ConsumerHome from "./routes/Consumer/ConsumerHome";
+import Order from "./routes/order";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -24,6 +26,11 @@ const router = createBrowserRouter([
       {
         path: "Consumer",
         element: <ConsumerHome />,
+      },
+      {
+        path: "order/:orderId",
+        element: <Order />,
+        loader: orderLoader,
       },
     ],
   },
