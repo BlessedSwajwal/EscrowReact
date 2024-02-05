@@ -1,3 +1,6 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+
 const orders = [
   {
     id: "5fccb406-c368-411f-82fbsnkf-05039b217d1b",
@@ -81,11 +84,32 @@ const orders = [
   },
 ];
 
-export const PendingOrders = () => orders;
-export const ProcessingOrders = () =>
-  orders.filter((o) => o.orderStatus == "processing");
-export const CompletedOrders = () =>
-  orders.filter((o) => o.orderStatus == "completed");
-export const DisputedOrders = () => orders;
+export const useOrderHub = () => {
+  const [orders, setOrders] = useState([]);
 
-export const GetOrder = (id) => orders.find((o) => o.id == id);
+  useEffect(() => {
+    async function getOrders() {
+      const url = `${import.meta.env.VITE_API_URL}/Consumer/GetAllOrder`;
+      const headers = {
+        Authorization: `Bearer ${window.localStorage.getItem("auth-token")}`,
+      };
+      try {
+        let res = await axios.get(url, { headers });
+        setOrders(res.data);
+      } catch (error) {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          console.log(error.response.data.detail);
+          console.log(error.response.status);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log("Error", error.message);
+        }
+      }
+    }
+
+    getOrders();
+  }, []);
+
+  return [orders, setOrders];
+};

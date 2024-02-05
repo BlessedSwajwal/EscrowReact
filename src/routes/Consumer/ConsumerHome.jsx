@@ -10,38 +10,34 @@ import {
 import order from "../../assets/order.jpg";
 import { useEffect, useState } from "react";
 
-import {
-  CompletedOrders,
-  DisputedOrders,
-  PendingOrders,
-  ProcessingOrders,
-} from "../../api/orders";
 import OrderCreateModal from "./OrderCreateModal";
 import OrdersContainer from "../../components/OrdersContainer";
+import { useOrderHub } from "../../api/orders";
 
 function ConsumerHome() {
-  const [orders, setOrders] = useState([]);
+  const [filteredOrders, setFilteredOrders] = useState([]);
   const [alignment, setAlignment] = useState("pending");
   const [modalOpen, setModalOpen] = useState(false);
+  const [orders, setOrders] = useOrderHub();
   useEffect(() => {
     if (!alignment) return;
     switch (alignment) {
       case "pending":
-        setOrders(PendingOrders());
+        setFilteredOrders(orders.filter((o) => o.orderStatus == "created"));
         break;
       case "processing":
-        setOrders(ProcessingOrders());
+        setFilteredOrders(orders.filter((o) => o.orderStatus == "processing"));
         break;
       case "completed":
-        setOrders(CompletedOrders());
+        setFilteredOrders(orders.filter((o) => o.orderStatus == "completed"));
         break;
       case "disputed":
-        setOrders(DisputedOrders());
+        setFilteredOrders(orders.filter((o) => o.orderStatus == "disputed"));
         break;
       default:
-        setOrders([]);
+        setFilteredOrders([]);
     }
-  }, [alignment]);
+  }, [alignment, orders]);
   return (
     <Box p={4}>
       <Paper
@@ -95,7 +91,7 @@ function ConsumerHome() {
         <ToggleButton value="completed">Completed</ToggleButton>
         <ToggleButton value="disputed">Disputed</ToggleButton>
       </ToggleButtonGroup>
-      <OrdersContainer orders={orders} />
+      <OrdersContainer orders={filteredOrders} />
     </Box>
   );
 }
