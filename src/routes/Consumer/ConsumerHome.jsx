@@ -19,6 +19,11 @@ function ConsumerHome() {
   const [alignment, setAlignment] = useState("pending");
   const [modalOpen, setModalOpen] = useState(false);
   const [orders, setOrders] = useOrderHub();
+
+  function addOrder(order) {
+    setOrders([order, ...orders]);
+  }
+
   useEffect(() => {
     if (!alignment) return;
     switch (alignment) {
@@ -74,7 +79,11 @@ function ConsumerHome() {
           Create
         </Button>
       </Paper>
-      <OrderCreateModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
+      <OrderCreateModal
+        modalOpen={modalOpen}
+        setModalOpen={setModalOpen}
+        addOrder={addOrder}
+      />
       <ToggleButtonGroup
         variant="filled"
         fullWidth

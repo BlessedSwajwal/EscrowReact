@@ -1,4 +1,5 @@
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 //calls the login API endpoint with the email and password.
 export async function Login(email, password) {
@@ -13,7 +14,7 @@ export async function Login(email, password) {
     res = await axios.post(`${apiUrl}/Consumer/login`, loginData);
     localStorage.setItem("auth-token", res.data.token);
     window.dispatchEvent(new Event("storage"));
-    console.log(res);
+    //console.log(res);
   } catch (error) {
     if (error.response) {
       // The request was made and the server responded with a status code
@@ -24,4 +25,15 @@ export async function Login(email, password) {
       console.log("Error", error.message);
     }
   }
+}
+
+export function getUserId() {
+  let token = localStorage.getItem("auth-token");
+  let decoded = jwtDecode(token);
+  let userId =
+    decoded[
+      "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+    ];
+  console.log(userId);
+  return userId;
 }
