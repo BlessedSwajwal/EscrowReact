@@ -12,8 +12,8 @@ import {
 } from "@mui/material";
 import logo from "../assets/logo.svg";
 import styled from "@emotion/styled";
-import { Link, Outlet, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { Link, Outlet } from "react-router-dom";
+import { useState } from "react";
 import { useAuth } from "../hooks/auth";
 import {
   AddIcCall,
@@ -28,17 +28,8 @@ import {
 
 function LandingNavBar() {
   const isLoggedIn = useAuth();
-  //const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpen = Boolean(anchorEl);
-
-  // useEffect(() => {
-  //   if (isLoggedIn) {
-  //     navigate("/Consumer");
-  //   } else {
-  //     navigate("/");
-  //   }
-  // }, [isLoggedIn, navigate]);
 
   const handleClose = () => {
     setAnchorEl(null);

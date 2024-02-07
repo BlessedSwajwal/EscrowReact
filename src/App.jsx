@@ -10,6 +10,7 @@ import { loader as profileLoader } from "./routes/profile";
 import ConsumerHome from "./routes/Consumer/ConsumerHome";
 import Order from "./routes/order";
 import Profile from "./routes/profile";
+import ProviderHome from "./routes/providerHome";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -47,7 +48,7 @@ const router = createBrowserRouter([
       },
       {
         path: "provider",
-        element: <>Hello Provider</>,
+        element: <ProviderHome />,
       },
     ],
   },
