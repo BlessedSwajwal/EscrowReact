@@ -54,6 +54,25 @@ function MainPageContainer() {
             Register
           </Button>
         </Link>
+        <Box mt={10}>
+          <Link to={`provider-login`}>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "#213e4a",
+                padding: "20px",
+                paddingInline: "65px",
+                borderRadius: 0,
+                fontSize: "20px",
+                "&:hover": {
+                  backgroundColor: "#5b6163",
+                },
+              }}
+            >
+              I'm a Provider
+            </Button>
+          </Link>
+        </Box>
       </Box>
       <Box></Box>
     </Box>

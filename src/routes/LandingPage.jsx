@@ -3,13 +3,14 @@ import CardContainer from "../components/CardContainer";
 import MainPageContainer from "../components/MainPageContainer";
 import { useAuth } from "../hooks/auth";
 import { useNavigate } from "react-router-dom";
+import { getUserType } from "../api/consumer";
 
 function LandingPage() {
   const isLoggedIn = useAuth();
   const navigate = useNavigate();
   useEffect(() => {
     if (isLoggedIn) {
-      navigate("/Consumer");
+      getUserType == "consumer" ? navigate("/Consumer") : navigate("/Provider");
     }
   });
   return (

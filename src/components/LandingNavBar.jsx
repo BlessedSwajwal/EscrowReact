@@ -1,7 +1,6 @@
 import {
   AppBar,
   Box,
-  Button,
   Divider,
   Icon,
   IconButton,
@@ -29,17 +28,17 @@ import {
 
 function LandingNavBar() {
   const isLoggedIn = useAuth();
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpen = Boolean(anchorEl);
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      navigate("/Consumer");
-    } else {
-      navigate("/");
-    }
-  }, [isLoggedIn, navigate]);
+  // useEffect(() => {
+  //   if (isLoggedIn) {
+  //     navigate("/Consumer");
+  //   } else {
+  //     navigate("/");
+  //   }
+  // }, [isLoggedIn, navigate]);
 
   const handleClose = () => {
     setAnchorEl(null);

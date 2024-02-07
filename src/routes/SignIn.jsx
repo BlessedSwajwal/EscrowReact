@@ -16,20 +16,22 @@ import { Login } from "../api/consumer";
 import { useAuth } from "../hooks/auth";
 import { useEffect } from "react";
 
-export default function SignIn() {
+// eslint-disable-next-line react/prop-types
+export default function SignIn({ userType }) {
   let loggedIn = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (loggedIn) {
-      navigate("/Consumer");
+      if (userType == "consumer") navigate("/Consumer");
+      if (userType == "provider") navigate("/Provider");
     }
-  }, [loggedIn, navigate]);
+  }, [loggedIn, navigate, userType]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    Login(data.get("email"), data.get("password"));
+    Login(userType, data.get("email"), data.get("password"));
   };
 
   return (
@@ -46,8 +48,10 @@ export default function SignIn() {
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <LockOutlinedIcon />
         </Avatar>
+        {/* {userType == "consumer" ? } */}
         <Typography component="h1" variant="h5">
-          Sign in
+          Sign in{" "}
+          {userType == "consumer" ? <b>as Consumer</b> : <b>as Provider</b>}
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField

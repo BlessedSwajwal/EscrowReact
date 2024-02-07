@@ -1,11 +1,12 @@
 /* eslint-disable react/prop-types */
 import { Box, Paper, Typography } from "@mui/material";
-import { getUserDetails } from "../api/consumer";
+import { getUserDetails, getUserType } from "../api/consumer";
 import styled from "@emotion/styled";
 import { useLoaderData } from "react-router-dom";
 
 export async function loader() {
-  let user = await getUserDetails();
+  const userType = getUserType();
+  let user = await getUserDetails(userType);
   return { user };
 }
 

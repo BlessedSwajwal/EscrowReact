@@ -19,7 +19,7 @@ const router = createBrowserRouter([
       { index: true, element: <LandingPage /> },
       {
         path: "login",
-        element: <SignIn />,
+        element: <SignIn userType="consumer" />,
       },
       {
         path: "register",
@@ -39,6 +39,15 @@ const router = createBrowserRouter([
         path: "profile",
         element: <Profile />,
         loader: profileLoader,
+      },
+
+      {
+        path: "provider-login",
+        element: <SignIn userType="provider" />,
+      },
+      {
+        path: "provider",
+        element: <>Hello Provider</>,
       },
     ],
   },
