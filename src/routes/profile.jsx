@@ -1,17 +1,16 @@
 /* eslint-disable react/prop-types */
 import { Box, Paper, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
 import { getUserDetails } from "../api/consumer";
 import styled from "@emotion/styled";
+import { useLoaderData } from "react-router-dom";
+
+export async function loader() {
+  let user = await getUserDetails();
+  return { user };
+}
 
 function Profile() {
-  const [user, setUser] = useState(null);
-  useEffect(() => {
-    async function getUser() {
-      setUser(await getUserDetails());
-    }
-    getUser();
-  }, []);
+  const { user } = useLoaderData();
   return (
     <Box
       display="flex"

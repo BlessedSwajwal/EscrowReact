@@ -84,22 +84,23 @@ function ConsumerHome() {
         setModalOpen={setModalOpen}
         addOrder={addOrder}
       />
-      <ToggleButtonGroup
-        variant="filled"
-        fullWidth
-        color="primary"
-        value={alignment}
-        exclusive
-        onChange={(event, newAlignment) => {
-          setAlignment(newAlignment);
-        }}
-        aria-label="Platform"
-      >
-        <ToggleButton value="pending">Pending</ToggleButton>
-        <ToggleButton value="processing">Processing</ToggleButton>
-        <ToggleButton value="completed">Completed</ToggleButton>
-        <ToggleButton value="disputed">Disputed</ToggleButton>
-      </ToggleButtonGroup>
+      <Box display="flex" flexDirection="column" alignItems="center">
+        <ToggleButtonGroup
+          variant="filled"
+          color="primary"
+          value={alignment}
+          exclusive
+          onChange={(event, newAlignment) => {
+            setAlignment(newAlignment);
+          }}
+          aria-label="Platform"
+        >
+          <ToggleButton value="pending">Pending</ToggleButton>
+          <ToggleButton value="processing">Processing</ToggleButton>
+          <ToggleButton value="completed">Completed</ToggleButton>
+          <ToggleButton value="disputed">Disputed</ToggleButton>
+        </ToggleButtonGroup>
+      </Box>
       <OrdersContainer orders={filteredOrders} />
     </Box>
   );

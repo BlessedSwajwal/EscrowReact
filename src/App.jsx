@@ -5,6 +5,7 @@ import SignIn from "./routes/SignIn";
 import Error from "./routes/error";
 import Register from "./routes/Register";
 import { loader as orderLoader } from "./routes/order";
+import { loader as profileLoader } from "./routes/profile";
 
 import ConsumerHome from "./routes/Consumer/ConsumerHome";
 import Order from "./routes/order";
@@ -37,6 +38,7 @@ const router = createBrowserRouter([
       {
         path: "profile",
         element: <Profile />,
+        loader: profileLoader,
       },
     ],
   },
