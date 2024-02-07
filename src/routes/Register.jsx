@@ -14,6 +14,7 @@ import { LockOutlined } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/auth";
 import { useEffect } from "react";
+import { SignUp } from "../api/consumer";
 
 function Register() {
   let loggedIn = useAuth();
@@ -28,10 +29,8 @@ function Register() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const userDetails = Object.fromEntries(data);
+    SignUp(userDetails);
   };
   return (
     <Container component="main" maxWidth="xs">
@@ -81,6 +80,15 @@ function Register() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                name="phone"
+                label="Phone"
+                id="phone"
               />
             </Grid>
             <Grid item xs={12}>

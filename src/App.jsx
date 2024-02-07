@@ -8,6 +8,7 @@ import { loader as orderLoader } from "./routes/order";
 
 import ConsumerHome from "./routes/Consumer/ConsumerHome";
 import Order from "./routes/order";
+import Profile from "./routes/profile";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -31,6 +32,11 @@ const router = createBrowserRouter([
         path: "order/:orderId",
         element: <Order />,
         loader: orderLoader,
+      },
+
+      {
+        path: "profile",
+        element: <Profile />,
       },
     ],
   },

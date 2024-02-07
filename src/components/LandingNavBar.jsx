@@ -1,27 +1,49 @@
 import {
   AppBar,
   Box,
+  Button,
+  Divider,
   Icon,
   IconButton,
+  Menu,
+  MenuItem,
   Toolbar,
   Typography,
 } from "@mui/material";
 import logo from "../assets/logo.svg";
 import styled from "@emotion/styled";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../hooks/auth";
 import { Person } from "@mui/icons-material";
 
 function LandingNavBar() {
   const isLoggedIn = useAuth();
   const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const menuOpen = Boolean(anchorEl);
 
   useEffect(() => {
     if (isLoggedIn) {
       navigate("/Consumer");
+    } else {
+      navigate("/");
     }
   }, [isLoggedIn, navigate]);
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleLogout = () => {
+    handleClose();
+    window.localStorage.removeItem("auth-token");
+    window.dispatchEvent(new Event("storage"));
+  };
 
   const StyledTitleBox = styled(Box)(({ theme }) => ({
     display: "block",
@@ -73,11 +95,51 @@ function LandingNavBar() {
                 </StyledTitleBox>
               </Box>
             </Link>
-            {console.log(isLoggedIn)}
-            {isLoggedIn ? <Avatar /> : <LoginRegisterBox />}
+            {isLoggedIn ? (
+              <IconButton onClick={handleClick}>
+                <Avatar />
+              </IconButton>
+            ) : (
+              <LoginRegisterBox />
+            )}
           </Box>
         </Toolbar>
       </AppBar>
+      <Menu
+        open={menuOpen}
+        onClose={handleClose}
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+      >
+        <MenuItem
+          style={{
+            paddingInline: "40px",
+            paddingBlock: "20px",
+          }}
+          onClick={handleClose}
+        >
+          <Link
+            to="/profile"
+            style={{ textDecoration: "none", color: "black" }}
+          >
+            Profile
+          </Link>
+        </MenuItem>
+        <Divider sx={{ backgroundColor: "black", height: 2 }} />
+        <MenuItem
+          style={{ paddingInline: "40px", paddingBlock: "20px" }}
+          onClick={handleLogout}
+        >
+          Logout
+        </MenuItem>
+      </Menu>
       <>
         <Outlet />
       </>

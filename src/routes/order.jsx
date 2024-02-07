@@ -1,9 +1,11 @@
 /* eslint-disable react/prop-types */
 import { useLoaderData } from "react-router-dom";
 import orderImg from "../assets/order.jpg";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, IconButton, Modal, Typography } from "@mui/material";
 import styled from "@emotion/styled";
 import axios from "axios";
+import { useState } from "react";
+import { GetPaymentUrl } from "../api/orders";
 
 export async function loader({ params }) {
   const authToken = localStorage.getItem("auth-token");
@@ -73,38 +75,23 @@ function Order() {
           ""
         )}
         {order.bids.map((b) => (
-          <BidComponent key={b.id} bid={b} orderStatus={order.orderStatus} />
+          <BidComponent
+            key={b.bidId}
+            bid={b}
+            orderStatus={order.orderStatus}
+            orderId={order.id}
+          />
         ))}
       </Box>
     </Box>
   );
 }
 
-// {
-//   "id": "334c1a8d-8e05-4755-8965-c0e00014ff7c",
-//   "name": "Build a composite deck in backyard",
-//   "description": "12x16 feet deck with railing. Low-maintenance composite material. Sturdy construction for entertaining.",
-//   "cost": 6000,
-//   "orderStatus": "created",
-//   "creatorId": "5e23a4e5-2564-4f3b-9069-4fcb68eab0f5",
-//   "allowedDays": 14,
-//   "providerId": "00000000-0000-0000-0000-000000000000",
-//   "acceptedDate": "0001-01-01T00:00:00",
-//   "deadLine": "0001-01-15T00:00:00",
-//   "paymentUri": "Order Status: CREATED",
-//   "bids": [
-//     {
-//       "bidId": "1fd54ac5-3a81-4581-b3ad-84191c372228",
-//       "bidderId": "309422f6-e639-4b7e-999e-27ef9ae9b370",
-//       "proposedAmount": 2000,
-//       "comment": "Will be using A1 materials.",
-//       "bidStatus": "PENDING"
-//     }
-//   ],
-//   "acceptedBid": "00000000-0000-0000-0000-000000000000"
-// }
-
-function BidComponent({ bid, orderStatus }) {
+function BidComponent({ bid, orderStatus, orderId }) {
+  const [paymentModalOpen, setPaymentModalOpen] = useState(false);
+  function handlePayClicked() {
+    setPaymentModalOpen(true);
+  }
   return (
     <Box
       key={bid.bidId}
@@ -121,6 +108,7 @@ function BidComponent({ bid, orderStatus }) {
 
       {orderStatus == "created" ? (
         <Button
+          onClick={handlePayClicked}
           variant="filled"
           sx={{
             backgroundColor: "green",
@@ -135,7 +123,102 @@ function BidComponent({ bid, orderStatus }) {
       ) : (
         ""
       )}
+
+      <PaymentModal
+        modalOpen={paymentModalOpen}
+        setModalOpen={setPaymentModalOpen}
+        orderId={orderId}
+        bidId={bid.bidId}
+      />
     </Box>
+  );
+}
+
+function PaymentModal({ modalOpen, setModalOpen, orderId, bidId }) {
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    borderRadius: 10,
+    p: 4,
+  };
+
+  async function handleKhaltiPayment() {
+    var url = await GetPaymentUrl(orderId, bidId, "khalti");
+    setModalOpen(false);
+    const newWindow = window.open(url, "_blank");
+    if (newWindow) newWindow.opener = null;
+    console.log(url);
+  }
+
+  async function handleStripePayment() {
+    var url = await GetPaymentUrl(orderId, bidId, "stripe");
+    setModalOpen(false);
+    const newWindow = window.open(url, "_blank");
+    if (newWindow) newWindow.opener = null;
+    console.log(url);
+  }
+
+  return (
+    <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+      <Box
+        sx={style}
+        display="flex"
+        flexDirection="column"
+        gap={3}
+        width="40vw"
+      >
+        <Button
+          onClick={handleKhaltiPayment}
+          sx={{
+            backgroundColor: "#6b516b",
+            color: "white",
+            "&:hover": {
+              backgroundColor: "lightblue",
+            },
+          }}
+        >
+          <img
+            src="https://seeklogo.com/images/K/khalti-logo-F0B049E67E-seeklogo.com.png"
+            alt="Khalti logo"
+            width="100px"
+            height="50px"
+            style={{
+              objectFit: "contain",
+            }}
+          />
+          <Box width={20}></Box>
+          <Typography variant="button">Pay with Khalti</Typography>
+        </Button>
+        <Button
+          onClick={handleStripePayment}
+          sx={{
+            backgroundColor: "gray",
+            color: "white",
+            "&:hover": {
+              backgroundColor: "purple",
+            },
+          }}
+        >
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Stripe_Logo%2C_revised_2016.svg/2560px-Stripe_Logo%2C_revised_2016.svg.png"
+            alt="Stripe logo"
+            width="100px"
+            height="50px"
+            style={{
+              objectFit: "contain",
+            }}
+          />
+          <Box width={20}></Box>
+          <Typography variant="button">Pay with Stripe</Typography>
+        </Button>
+      </Box>
+    </Modal>
   );
 }
 

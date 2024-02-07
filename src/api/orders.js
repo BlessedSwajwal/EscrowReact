@@ -50,3 +50,27 @@ export async function CreateOrder(order) {
     }
   }
 }
+
+export async function GetPaymentUrl(orderId, bidId, method) {
+  var paymentKeyword = "AcceptBid";
+  if (method == "stripe") paymentKeyword = "AcceptBidWithStripe";
+  const apiUrl = `${
+    import.meta.env.VITE_API_URL
+  }/Order/${orderId}/${paymentKeyword}?BidId=${bidId}`;
+  const headers = {
+    Authorization: `Bearer ${window.localStorage.getItem("auth-token")}`,
+  };
+  try {
+    let res = await axios.get(apiUrl, { headers });
+    return res.data.paymentUri;
+  } catch (error) {
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      console.log(error.response.data.detail);
+      console.log(error.response.status);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log("Error", error.message);
+    }
+  }
+}
