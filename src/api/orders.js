@@ -74,3 +74,49 @@ export async function GetPaymentUrl(orderId, bidId, method) {
     }
   }
 }
+
+export async function GetAllCreatedOrders() {
+  //Url and headers setup
+  const createdOrdersUrl = `${import.meta.env.VITE_API_URL}/Order`;
+  const headers = {
+    Authorization: `Bearer ${window.localStorage.getItem("auth-token")}`,
+  };
+
+  try {
+    let res = await axios.get(createdOrdersUrl, { headers });
+    return res.data;
+  } catch (error) {
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      console.log(error.response.data.detail);
+      console.log(error.response.status);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log("Error", error.message);
+    }
+  }
+}
+
+export async function GetAllSelectedOrders() {
+  //Url and headers setup
+  const selectedOrdersUrl = `${
+    import.meta.env.VITE_API_URL
+  }/Provider/GetSelectedBids`;
+  const headers = {
+    Authorization: `Bearer ${window.localStorage.getItem("auth-token")}`,
+  };
+
+  try {
+    let res = await axios.get(selectedOrdersUrl, { headers });
+    return res.data;
+  } catch (error) {
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      console.log(error.response.data.detail);
+      console.log(error.response.status);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log("Error", error.message);
+    }
+  }
+}

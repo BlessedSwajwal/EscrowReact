@@ -25,6 +25,7 @@ import {
   X,
   YouTube,
 } from "@mui/icons-material";
+import { getUserType } from "../api/consumer";
 
 function LandingNavBar() {
   const isLoggedIn = useAuth();
@@ -79,13 +80,21 @@ function LandingNavBar() {
       />
     </IconButton>
   );
+  const redirectUrl = isLoggedIn
+    ? getUserType() == "provider"
+      ? "/Provider"
+      : "/Consumer"
+    : "/";
 
   return (
     <>
       <AppBar position="sticky">
         <Toolbar sx={{ backgroundColor: "gray" }}>
           <Box display="flex" justifyContent="space-between" width="100%">
-            <Link to="/" style={{ textDecoration: "none", color: "white" }}>
+            <Link
+              to={redirectUrl}
+              style={{ textDecoration: "none", color: "white" }}
+            >
               <Box display="flex" gap={3} alignItems="center" height="100%">
                 <Icon>
                   <img src={logo} alt="Logo" />

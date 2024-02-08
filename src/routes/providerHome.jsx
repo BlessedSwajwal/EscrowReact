@@ -4,10 +4,27 @@ import { Link } from "react-router-dom";
 import { Carousel } from "primereact/carousel";
 
 import { TabView, TabPanel } from "primereact/tabview";
-import { Avatar } from "primereact/avatar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { GetAllCreatedOrders, GetAllSelectedOrders } from "../api/orders";
 
 function ProviderHome() {
+  const [createdOrders, setCreatedOrders] = useState(null);
+  const [selectedOrders, setSelectedOrders] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    async function getProvidersOrders() {
+      const [createdOrdersRes, selectedOrdersRes] = await Promise.all([
+        GetAllCreatedOrders(),
+        GetAllSelectedOrders(),
+      ]);
+      setCreatedOrders(createdOrdersRes);
+      setSelectedOrders(selectedOrdersRes);
+    }
+    getProvidersOrders();
+  }, []);
+
+  const filteredOrders = activeIndex == 1 ? selectedOrders : createdOrders;
   var orders = [
     {
       id: "b2c9d850-dc36-4d15-8b1f-bf2af2e2137a",
@@ -129,10 +146,15 @@ function ProviderHome() {
         flexDirection="column"
         gap={2}
       >
-        <OrderTabs />
-        {orders.map((order) => (
-          <OrderBox key={order.id} order={order} />
-        ))}
+        <OrderTabs activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
+        
+        {filteredOrders ? (
+          filteredOrders.map((order) => (
+            <OrderBox key={order.id} order={order} />
+          ))
+        ) : (
+          <h6>No orders.</h6>
+        )}
       </Box>
     </Box>
   );
@@ -174,8 +196,7 @@ function OrderBox({ order }) {
   );
 }
 
-function OrderTabs() {
-  const [activeIndex, setActiveIndex] = useState(0);
+function OrderTabs({ activeIndex, setActiveIndex }) {
   const styles = {
     cursor: "pointer",
     marginInline: 3,
