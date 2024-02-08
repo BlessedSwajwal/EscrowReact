@@ -6,7 +6,7 @@ import styled from "@emotion/styled";
 import axios from "axios";
 import { useState } from "react";
 import { GetPaymentUrl, createBid } from "../api/orders";
-import { getUserId } from "../api/consumer";
+import { getUserId, getUserType } from "../api/consumer";
 import { Gavel } from "@mui/icons-material";
 
 export async function loader({ params }) {
@@ -106,6 +106,8 @@ function Order() {
 }
 
 function CheckIfCanBid(order) {
+  // If not a ProviderHome, return false
+  if (getUserType() != "provider") return false;
   //If order status is not created, return false
   if (order.orderStatus != "created") return false;
   //If created order has no bids, return true;

@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Checkbox,
+  CircularProgress,
   Container,
   CssBaseline,
   FormControlLabel,
@@ -14,12 +15,14 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Link, useNavigate } from "react-router-dom";
 import { Login } from "../api/consumer";
 import { useAuth } from "../hooks/auth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Button as PrButton } from "primereact/button";
 
 // eslint-disable-next-line react/prop-types
 export default function SignIn({ userType }) {
   let loggedIn = useAuth();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (loggedIn) {
@@ -28,10 +31,12 @@ export default function SignIn({ userType }) {
     }
   }, [loggedIn, navigate, userType]);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
+    setLoading(true);
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    Login(userType, data.get("email"), data.get("password"));
+    await Login(userType, data.get("email"), data.get("password"));
+    setLoading(false);
   };
 
   return (
@@ -79,13 +84,18 @@ export default function SignIn({ userType }) {
             label="Remember me"
           />
           <Button
-            type="submit"
             fullWidth
+            type="submit"
+            disabled={loading}
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            style={{
+              marginTop: 3,
+              marginBottom: 2,
+            }}
           >
             Sign In
           </Button>
+
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">

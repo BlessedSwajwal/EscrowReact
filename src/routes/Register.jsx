@@ -13,12 +13,13 @@ import {
 import { LockOutlined } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/auth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { SignUp } from "../api/consumer";
 
 function Register() {
   let loggedIn = useAuth();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (loggedIn) {
@@ -26,11 +27,13 @@ function Register() {
     }
   }, [loggedIn, navigate]);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
+    setLoading(true);
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const userDetails = Object.fromEntries(data);
-    SignUp(userDetails);
+    await SignUp(userDetails);
+    setLoading(false);
   };
   return (
     <Container component="main" maxWidth="xs">
@@ -111,13 +114,14 @@ function Register() {
           </Grid>
           <Button
             type="submit"
+            disabled={loading}
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
             Sign Up
           </Button>
-          <Grid container justifyContent="flex-end">
+          <Grid container justifyContent="flex-end" mb={5}>
             <Grid item>
               <Link to="/login" variant="body2">
                 Already have an account? Sign in
