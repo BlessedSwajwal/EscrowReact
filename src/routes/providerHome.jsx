@@ -3,6 +3,10 @@ import { Box, Divider, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { Carousel } from "primereact/carousel";
 
+import { TabView, TabPanel } from "primereact/tabview";
+import { Avatar } from "primereact/avatar";
+import { useState } from "react";
+
 function ProviderHome() {
   var orders = [
     {
@@ -111,7 +115,7 @@ function ProviderHome() {
           numScroll={1}
           numVisible={1}
           itemTemplate={carousalTemplate}
-          autoplayInterval={3000}
+          autoplayInterval={7000}
         />
       </div>
       <Box
@@ -125,6 +129,7 @@ function ProviderHome() {
         flexDirection="column"
         gap={2}
       >
+        <OrderTabs />
         {orders.map((order) => (
           <OrderBox key={order.id} order={order} />
         ))}
@@ -135,30 +140,175 @@ function ProviderHome() {
 
 function OrderBox({ order }) {
   return (
-    <Box p={1}>
-      <Link
-        style={{ textDecoration: "none", color: "black" }}
-        to={`/order/${order.id}`}
-      >
-        <Typography variant="h5" fontWeight={700}>
-          {order.name}
-        </Typography>
-      </Link>
-      <Box display="flex" gap="10px" sx={{ fontSize: 10 }}>
-        <Typography>
-          <b>Budget:</b> Rs. {order.cost / 100}
-        </Typography>
-        <Typography>
-          <b>Proposed Time:</b> {order.allowedDays} days
-        </Typography>
+    <Box>
+      <Box p={1}>
+        <Link
+          style={{ textDecoration: "none", color: "black" }}
+          to={`/order/${order.id}`}
+        >
+          <Typography variant="h5" fontWeight={700}>
+            {order.name}
+          </Typography>
+        </Link>
+        <Box
+          mb={3}
+          display="flex"
+          gap="10px"
+          sx={{ fontSize: 10, color: "gray" }}
+        >
+          <Typography>
+            <b>Budget:</b> Rs. {order.cost / 100}
+          </Typography>
+          <Typography>
+            <b>Proposed Time:</b> {order.allowedDays} days
+          </Typography>
+        </Box>
+        <Box mb={2} display="flex" gap="10px" sx={{ fontSize: 10 }}>
+          <Typography textAlign="justify">
+            <b>Description:</b> {order.description}
+          </Typography>
+        </Box>
+        <Divider sx={{ backgroundColor: "black", height: "2px" }} />
       </Box>
-      <Box mb={2} display="flex" gap="10px" sx={{ fontSize: 10 }}>
-        <Typography textAlign="justify">
-          <b>Description:</b> {order.description}
-        </Typography>
-      </Box>
-      <Divider sx={{ backgroundColor: "black", height: "2px" }} />
     </Box>
+  );
+}
+
+function OrderTabs() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const styles = {
+    cursor: "pointer",
+    marginInline: 3,
+    padding: "14px",
+    borderRadius: "10px",
+    marginBlock: "5px",
+  };
+  const tab1Style = (options) => {
+    return (
+      <div
+        onClick={options.onClick}
+        style={{
+          ...styles,
+          backgroundColor: activeIndex == 0 ? "green" : "",
+        }}
+      >
+        <Typography fontSize={20} fontWeight={600}>
+          Bid On Orders
+        </Typography>
+      </div>
+    );
+  };
+  const tab2Style = (options) => {
+    return (
+      <div
+        onClick={options.onClick}
+        style={{
+          ...styles,
+          backgroundColor: activeIndex == 1 ? "green" : "",
+        }}
+      >
+        <Typography fontSize={20} fontWeight={600}>
+          Your Orders
+        </Typography>
+      </div>
+    );
+  };
+  const tab3Style = (options) => {
+    return (
+      <div
+        onClick={options.onClick}
+        style={{
+          ...styles,
+          backgroundColor: activeIndex == 2 ? "green" : "",
+        }}
+      >
+        <Typography fontSize={20} fontWeight={600}>
+          Completed Orders
+        </Typography>
+      </div>
+    );
+  };
+  const tab4Style = (options) => {
+    return (
+      <div
+        onClick={options.onClick}
+        style={{
+          ...styles,
+          backgroundColor: activeIndex == 3 ? "green" : "",
+        }}
+      >
+        <Typography fontSize={20} fontWeight={600}>
+          Disputed Orders
+        </Typography>
+      </div>
+    );
+  };
+  return (
+    <TabView
+      activeIndex={activeIndex}
+      onTabChange={(e) => setActiveIndex(e.index)}
+    >
+      <TabPanel header="Bid on Orders" headerTemplate={tab1Style}>
+        <Typography fontSize={16}>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus
+          sapiente eos nostrum, soluta inventore atque eligendi labore mollitia
+          culpa praesentium ab consectetur ut molestiae tenetur accusantium sunt
+          quos quis totam quaerat odit tempora. Nesciunt quia, fugiat natus
+          beatae, rem quaerat ex quod sequi saepe voluptatem atque earum, harum
+          explicabo consectetur error voluptates. Itaque, quas aliquid odit est
+          sapiente aliquam non nulla voluptatibus repellendus veniam, ipsa sint
+          reprehenderit, incidunt suscipit dicta harum? Eos, sit quam totam
+          temporibus reprehenderit delectus enim aspernatur nisi nobis
+          doloribus! Ratione dignissimos facere aliquid modi nam perspiciatis
+          iusto est ex, deserunt aut nihil repellendus quo molestiae. Facere!
+        </Typography>
+      </TabPanel>
+      <TabPanel headerTemplate={tab2Style} header="Your Orders">
+        <Typography fontSize={16}>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus
+          sapiente eos nostrum, soluta inventore atque eligendi labore mollitia
+          culpa praesentium ab consectetur ut molestiae tenetur accusantium sunt
+          quos quis totam quaerat odit tempora. Nesciunt quia, fugiat natus
+          beatae, rem quaerat ex quod sequi saepe voluptatem atque earum, harum
+          explicabo consectetur error voluptates. Itaque, quas aliquid odit est
+          sapiente aliquam non nulla voluptatibus repellendus veniam, ipsa sint
+          reprehenderit, incidunt suscipit dicta harum? Eos, sit quam totam
+          temporibus reprehenderit delectus enim aspernatur nisi nobis
+          doloribus! Ratione dignissimos facere aliquid modi nam perspiciatis
+          iusto est ex, deserunt aut nihil repellendus quo molestiae. Facere!
+        </Typography>
+      </TabPanel>
+      <TabPanel headerTemplate={tab3Style} header="Completed Orders">
+        <Typography fontSize={16}>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus
+          sapiente eos nostrum, soluta inventore atque eligendi labore mollitia
+          culpa praesentium ab consectetur ut molestiae tenetur accusantium sunt
+          quos quis totam quaerat odit tempora. Nesciunt quia, fugiat natus
+          beatae, rem quaerat ex quod sequi saepe voluptatem atque earum, harum
+          explicabo consectetur error voluptates. Itaque, quas aliquid odit est
+          sapiente aliquam non nulla voluptatibus repellendus veniam, ipsa sint
+          reprehenderit, incidunt suscipit dicta harum? Eos, sit quam totam
+          temporibus reprehenderit delectus enim aspernatur nisi nobis
+          doloribus! Ratione dignissimos facere aliquid modi nam perspiciatis
+          iusto est ex, deserunt aut nihil repellendus quo molestiae. Facere!
+        </Typography>
+      </TabPanel>
+      <TabPanel headerTemplate={tab4Style} header="Disputed Orders">
+        <Typography fontSize={16}>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus
+          sapiente eos nostrum, soluta inventore atque eligendi labore mollitia
+          culpa praesentium ab consectetur ut molestiae tenetur accusantium sunt
+          quos quis totam quaerat odit tempora. Nesciunt quia, fugiat natus
+          beatae, rem quaerat ex quod sequi saepe voluptatem atque earum, harum
+          explicabo consectetur error voluptates. Itaque, quas aliquid odit est
+          sapiente aliquam non nulla voluptatibus repellendus veniam, ipsa sint
+          reprehenderit, incidunt suscipit dicta harum? Eos, sit quam totam
+          temporibus reprehenderit delectus enim aspernatur nisi nobis
+          doloribus! Ratione dignissimos facere aliquid modi nam perspiciatis
+          iusto est ex, deserunt aut nihil repellendus quo molestiae. Facere!
+        </Typography>
+      </TabPanel>
+    </TabView>
   );
 }
 
