@@ -25,53 +25,6 @@ function ProviderHome() {
   }, []);
 
   const filteredOrders = activeIndex == 1 ? selectedOrders : createdOrders;
-  var orders = [
-    {
-      id: "b2c9d850-dc36-4d15-8b1f-bf2af2e2137a",
-      name: "Build a composite deck in backyard",
-      description:
-        "12x16 feet deck with railing. Low-maintenance composite material. Sturdy construction for entertaining. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus dicta porro quidem! Facilis modi laboriosam sequi perspiciatis nulla voluptatum deserunt illo quod ex necessitatibus accusamus magni inventore expedita unde id saepe, soluta ratione at earum quo, et voluptate! Commodi voluptate iusto ullam delectus exercitationem voluptatum repellendus rem nesciunt? Repudiandae, pariatur. Architecto eaque, illum dolores iusto explicabo quam deserunt dolore. Ipsam est sint esse obcaecati sunt quis aliquid ab dolore aspernatur magni at corrupti beatae totam, repudiandae animi doloremque dolores ea quia temporibus illo asperiores atque architecto blanditiis! Mollitia sit aliquid quisquam doloremque dolorum ex atque, ullam tempore suscipit aliquam ab?",
-      cost: 6000,
-      orderStatus: "created",
-      creatorId: "5e23a4e5-2564-4f3b-9069-4fcb68eab0f5",
-      allowedDays: 14,
-      providerId: "00000000-0000-0000-0000-000000000000",
-      acceptedDate: "0001-01-01T00:00:00",
-      deadLine: "0001-01-15T00:00:00",
-      bidsCount: 0,
-      acceptedBid: "00000000-0000-0000-0000-000000000000",
-    },
-    {
-      id: "b2c9d850-dc36-4d15-8b1f-bf2af2e2137b",
-      name: "Build a composite deck in backyard",
-      description:
-        "12x16 feet deck with railing. Low-maintenance composite material. Sturdy construction for entertaining.",
-      cost: 6000,
-      orderStatus: "created",
-      creatorId: "5e23a4e5-2564-4f3b-9069-4fcb68eab0f5",
-      allowedDays: 14,
-      providerId: "00000000-0000-0000-0000-000000000000",
-      acceptedDate: "0001-01-01T00:00:00",
-      deadLine: "0001-01-15T00:00:00",
-      bidsCount: 0,
-      acceptedBid: "00000000-0000-0000-0000-000000000000",
-    },
-    {
-      id: "b2c9d850-dc36-4d15-8b1f-bf2af2e2137c",
-      name: "Build a composite deck in backyard",
-      description:
-        "12x16 feet deck with railing. Low-maintenance composite material. Sturdy construction for entertaining.",
-      cost: 6000,
-      orderStatus: "created",
-      creatorId: "5e23a4e5-2564-4f3b-9069-4fcb68eab0f5",
-      allowedDays: 14,
-      providerId: "00000000-0000-0000-0000-000000000000",
-      acceptedDate: "0001-01-01T00:00:00",
-      deadLine: "0001-01-15T00:00:00",
-      bidsCount: 0,
-      acceptedBid: "00000000-0000-0000-0000-000000000000",
-    },
-  ];
 
   const carouselData = [
     {
@@ -147,7 +100,7 @@ function ProviderHome() {
         gap={2}
       >
         <OrderTabs activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
-        
+
         {filteredOrders ? (
           filteredOrders.map((order) => (
             <OrderBox key={order.id} order={order} />
@@ -269,66 +222,10 @@ function OrderTabs({ activeIndex, setActiveIndex }) {
       activeIndex={activeIndex}
       onTabChange={(e) => setActiveIndex(e.index)}
     >
-      <TabPanel header="Bid on Orders" headerTemplate={tab1Style}>
-        <Typography fontSize={16}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus
-          sapiente eos nostrum, soluta inventore atque eligendi labore mollitia
-          culpa praesentium ab consectetur ut molestiae tenetur accusantium sunt
-          quos quis totam quaerat odit tempora. Nesciunt quia, fugiat natus
-          beatae, rem quaerat ex quod sequi saepe voluptatem atque earum, harum
-          explicabo consectetur error voluptates. Itaque, quas aliquid odit est
-          sapiente aliquam non nulla voluptatibus repellendus veniam, ipsa sint
-          reprehenderit, incidunt suscipit dicta harum? Eos, sit quam totam
-          temporibus reprehenderit delectus enim aspernatur nisi nobis
-          doloribus! Ratione dignissimos facere aliquid modi nam perspiciatis
-          iusto est ex, deserunt aut nihil repellendus quo molestiae. Facere!
-        </Typography>
-      </TabPanel>
-      <TabPanel headerTemplate={tab2Style} header="Your Orders">
-        <Typography fontSize={16}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus
-          sapiente eos nostrum, soluta inventore atque eligendi labore mollitia
-          culpa praesentium ab consectetur ut molestiae tenetur accusantium sunt
-          quos quis totam quaerat odit tempora. Nesciunt quia, fugiat natus
-          beatae, rem quaerat ex quod sequi saepe voluptatem atque earum, harum
-          explicabo consectetur error voluptates. Itaque, quas aliquid odit est
-          sapiente aliquam non nulla voluptatibus repellendus veniam, ipsa sint
-          reprehenderit, incidunt suscipit dicta harum? Eos, sit quam totam
-          temporibus reprehenderit delectus enim aspernatur nisi nobis
-          doloribus! Ratione dignissimos facere aliquid modi nam perspiciatis
-          iusto est ex, deserunt aut nihil repellendus quo molestiae. Facere!
-        </Typography>
-      </TabPanel>
-      <TabPanel headerTemplate={tab3Style} header="Completed Orders">
-        <Typography fontSize={16}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus
-          sapiente eos nostrum, soluta inventore atque eligendi labore mollitia
-          culpa praesentium ab consectetur ut molestiae tenetur accusantium sunt
-          quos quis totam quaerat odit tempora. Nesciunt quia, fugiat natus
-          beatae, rem quaerat ex quod sequi saepe voluptatem atque earum, harum
-          explicabo consectetur error voluptates. Itaque, quas aliquid odit est
-          sapiente aliquam non nulla voluptatibus repellendus veniam, ipsa sint
-          reprehenderit, incidunt suscipit dicta harum? Eos, sit quam totam
-          temporibus reprehenderit delectus enim aspernatur nisi nobis
-          doloribus! Ratione dignissimos facere aliquid modi nam perspiciatis
-          iusto est ex, deserunt aut nihil repellendus quo molestiae. Facere!
-        </Typography>
-      </TabPanel>
-      <TabPanel headerTemplate={tab4Style} header="Disputed Orders">
-        <Typography fontSize={16}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus
-          sapiente eos nostrum, soluta inventore atque eligendi labore mollitia
-          culpa praesentium ab consectetur ut molestiae tenetur accusantium sunt
-          quos quis totam quaerat odit tempora. Nesciunt quia, fugiat natus
-          beatae, rem quaerat ex quod sequi saepe voluptatem atque earum, harum
-          explicabo consectetur error voluptates. Itaque, quas aliquid odit est
-          sapiente aliquam non nulla voluptatibus repellendus veniam, ipsa sint
-          reprehenderit, incidunt suscipit dicta harum? Eos, sit quam totam
-          temporibus reprehenderit delectus enim aspernatur nisi nobis
-          doloribus! Ratione dignissimos facere aliquid modi nam perspiciatis
-          iusto est ex, deserunt aut nihil repellendus quo molestiae. Facere!
-        </Typography>
-      </TabPanel>
+      <TabPanel header="Bid on Orders" headerTemplate={tab1Style}></TabPanel>
+      <TabPanel headerTemplate={tab2Style} header="Your Orders"></TabPanel>
+      <TabPanel headerTemplate={tab3Style} header="Completed Orders"></TabPanel>
+      <TabPanel headerTemplate={tab4Style} header="Disputed Orders"></TabPanel>
     </TabView>
   );
 }

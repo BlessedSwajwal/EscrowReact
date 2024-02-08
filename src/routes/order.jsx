@@ -1,11 +1,13 @@
 /* eslint-disable react/prop-types */
 import { useLoaderData } from "react-router-dom";
 import orderImg from "../assets/order.jpg";
-import { Box, Button, IconButton, Modal, Typography } from "@mui/material";
+import { Box, Button, Modal, TextField, Typography } from "@mui/material";
 import styled from "@emotion/styled";
 import axios from "axios";
 import { useState } from "react";
-import { GetPaymentUrl } from "../api/orders";
+import { GetPaymentUrl, createBid } from "../api/orders";
+import { getUserId } from "../api/consumer";
+import { Gavel } from "@mui/icons-material";
 
 export async function loader({ params }) {
   const authToken = localStorage.getItem("auth-token");
@@ -24,12 +26,16 @@ export async function loader({ params }) {
   }
 }
 function Order() {
+  const [modalOpen, setModalOpen] = useState(false);
+  const { order } = useLoaderData();
+  const [bids, setBids] = useState(order.bids);
   const StyledText = styled(Typography)({
     component: "p",
     fontSize: 16,
     alignSelf: "flex-start",
   });
-  const { order } = useLoaderData();
+
+  // setBids([...order.bids]);
   return (
     <Box
       p={8}
@@ -66,20 +72,32 @@ function Order() {
         <b>No. of bids: </b>
         {order.bids.length}
       </StyledText>
+      {CheckIfCanBid(order) ? (
+        <CreateBidButton setModalOpen={setModalOpen} />
+      ) : (
+        ""
+      )}
+      <CreateBidModal
+        modalOpen={modalOpen}
+        setModalOpen={setModalOpen}
+        orderId={order.id}
+        bids={bids}
+        setBids={setBids}
+      />
       <Box alignSelf="flex-start">
-        {order.bids.length > 0 ? (
+        {bids.length > 0 ? (
           <Typography fontSize={22} fontWeight={600}>
             BIDS:
           </Typography>
         ) : (
           ""
         )}
-        {order.bids.map((b) => (
+        {bids.map((b) => (
           <BidComponent
             key={b.bidId}
             bid={b}
             orderStatus={order.orderStatus}
-            orderId={order.id}
+            order={order}
           />
         ))}
       </Box>
@@ -87,7 +105,96 @@ function Order() {
   );
 }
 
-function BidComponent({ bid, orderStatus, orderId }) {
+function CheckIfCanBid(order) {
+  //If order status is not created, return false
+  if (order.orderStatus != "created") return false;
+  //If created order has no bids, return true;
+  if (order.bids.length == 0) return true;
+  //Check if already bidded by the user
+  if (order.bids.find((b) => b.bidderId == getUserId())) return false;
+  return true;
+}
+
+function CreateBidModal({ modalOpen, setModalOpen, orderId, bids, setBids }) {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const data = new FormData(event.target);
+    let bid = Object.fromEntries(data);
+    bid.ProposedAmount = parseInt(parseFloat(bid.ProposedAmount) * 100);
+    bid.OrderId = orderId;
+    let createdBid = await createBid(bid);
+    //Create a bid and add it to bids list
+    setBids([createdBid, ...bids]);
+  };
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    width: { xs: "90vw", sm: "70vw", md: 400 },
+    transform: "translate(-50%, -50%)",
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    borderRadius: 10,
+    p: 4,
+  };
+  return (
+    <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+      <Box
+        sx={style}
+        display="flex"
+        flexDirection="column"
+        gap={3}
+        component="form"
+        onSubmit={handleSubmit}
+      >
+        <Typography variant="h5">Create Order</Typography>
+        <Typography mb={1.2}>Proposed Amount:</Typography>
+        <input
+          id="Proposed Amount"
+          name="ProposedAmount"
+          style={{ padding: 15 }}
+          type="number"
+          step="0.01"
+          placeholder="Proposed amount"
+        />
+        <TextField label="Description" multiline rows={4} name="comment" />
+
+        <Button
+          type="submit"
+          variant="filled"
+          sx={{ backgroundColor: "purple", color: "white", p: 1, fontSize: 16 }}
+        >
+          Create
+        </Button>
+      </Box>
+    </Modal>
+  );
+}
+
+function CreateBidButton({ setModalOpen }) {
+  return (
+    <Button
+      onClick={() => setModalOpen(true)}
+      startIcon={<Gavel />}
+      sx={{
+        alignSelf: "flex-start",
+        paddingBlock: "10px",
+        paddingInline: "20px",
+        backgroundColor: "green",
+        color: "white",
+        borderRadius: 10,
+        "&:hover": {
+          backgroundColor: "purple",
+        },
+      }}
+    >
+      Create Bid
+    </Button>
+  );
+}
+
+function BidComponent({ bid, orderStatus, order }) {
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
   function handlePayClicked() {
     setPaymentModalOpen(true);
@@ -106,7 +213,7 @@ function BidComponent({ bid, orderStatus, orderId }) {
       <Typography>Comments: {bid.comment}</Typography>
       <Typography>Status: {bid.bidStatus.toUpperCase()}</Typography>
 
-      {orderStatus == "created" ? (
+      {orderStatus == "created" && order.creatorId == getUserId() ? (
         <Button
           onClick={handlePayClicked}
           variant="filled"
@@ -127,7 +234,7 @@ function BidComponent({ bid, orderStatus, orderId }) {
       <PaymentModal
         modalOpen={paymentModalOpen}
         setModalOpen={setPaymentModalOpen}
-        orderId={orderId}
+        orderId={order.id}
         bidId={bid.bidId}
       />
     </Box>
