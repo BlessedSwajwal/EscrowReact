@@ -6,6 +6,7 @@ const OrderCreateModal = ({ modalOpen, setModalOpen, addOrder }) => {
   //Handle the order creation submission
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setModalOpen(false);
     const data = new FormData(event.target);
     let order = Object.fromEntries(data);
     order.Cost = parseInt(parseFloat(order.Cost) * 100);

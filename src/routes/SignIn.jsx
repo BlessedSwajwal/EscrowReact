@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   Checkbox,
-  CircularProgress,
   Container,
   CssBaseline,
   FormControlLabel,
@@ -16,7 +15,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { Login } from "../api/consumer";
 import { useAuth } from "../hooks/auth";
 import { useEffect, useState } from "react";
-import { Button as PrButton } from "primereact/button";
 
 // eslint-disable-next-line react/prop-types
 export default function SignIn({ userType }) {
@@ -103,7 +101,11 @@ export default function SignIn({ userType }) {
               </Link>
             </Grid>
             <Grid item>
-              <Link to={`/register`}>{"Don't have an account? Sign Up"}</Link>
+              <Link
+                to={userType == "consumer" ? "/register" : "/provider-register"}
+              >
+                {"Don't have an account? Sign Up"}
+              </Link>
             </Grid>
           </Grid>
         </Box>

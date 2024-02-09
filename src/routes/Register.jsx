@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
   Avatar,
   Box,
@@ -16,23 +17,24 @@ import { useAuth } from "../hooks/auth";
 import { useEffect, useState } from "react";
 import { SignUp } from "../api/consumer";
 
-function Register() {
+// eslint-disable-next-line react/prop-types
+function Register({ userType }) {
   let loggedIn = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (loggedIn) {
-      //TODO
+      userType == "consumer" ? navigate("/consumer") : navigate("/provider");
     }
-  }, [loggedIn, navigate]);
+  }, [loggedIn, navigate, userType]);
 
   const handleSubmit = async (event) => {
     setLoading(true);
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const userDetails = Object.fromEntries(data);
-    await SignUp(userDetails);
+    await SignUp(userType, userDetails);
     setLoading(false);
   };
   return (
@@ -50,7 +52,7 @@ function Register() {
           <LockOutlined />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+          Sign up <b>as {userType.toUpperCase()}</b>
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>

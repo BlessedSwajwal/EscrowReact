@@ -120,6 +120,7 @@ function CheckIfCanBid(order) {
 function CreateBidModal({ modalOpen, setModalOpen, orderId, bids, setBids }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setModalOpen(false);
     const data = new FormData(event.target);
     let bid = Object.fromEntries(data);
     bid.ProposedAmount = parseInt(parseFloat(bid.ProposedAmount) * 100);

@@ -146,7 +146,9 @@ function LandingNavBar() {
           style={{ paddingInline: "40px", paddingBlock: "20px" }}
           onClick={handleLogout}
         >
-          Logout
+          <Link to="/" style={{ textDecoration: "none", color: "black" }}>
+            Logout
+          </Link>
         </MenuItem>
       </Menu>
       <>

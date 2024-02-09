@@ -30,14 +30,17 @@ export async function Login(userType, email, password) {
   }
 }
 
-export async function SignUp(userDetails) {
+export async function SignUp(userType, userDetails) {
   console.log(userDetails);
   var apiUrl = import.meta.env.VITE_API_URL;
   var res;
   try {
     //Try to login and if successful, set the auth-token in the local storage
     //and raise a storage event for the custom hooks to reposnd to.
-    res = await axios.post(`${apiUrl}/Consumer/register`, userDetails);
+    if (userType == "consumer")
+      res = await axios.post(`${apiUrl}/Consumer/register`, userDetails);
+    if (userType == "provider")
+      res = await axios.post(`${apiUrl}/Provider/register`, userDetails);
     localStorage.setItem("auth-token", res.data.token);
     window.dispatchEvent(new Event("storage"));
     console.log(res);

@@ -24,7 +24,7 @@ const router = createBrowserRouter([
       },
       {
         path: "register",
-        element: <Register />,
+        element: <Register userType="consumer" />,
       },
       {
         path: "Consumer",
@@ -45,6 +45,10 @@ const router = createBrowserRouter([
       {
         path: "provider-login",
         element: <SignIn userType="provider" />,
+      },
+      {
+        path: "provider-register",
+        element: <Register userType="provider" />,
       },
       {
         path: "provider",
