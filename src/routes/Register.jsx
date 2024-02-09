@@ -16,6 +16,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/auth";
 import { useEffect, useState } from "react";
 import { SignUp } from "../api/consumer";
+import { useForm } from "react-hook-form";
 
 // eslint-disable-next-line react/prop-types
 function Register({ userType }) {
@@ -29,12 +30,23 @@ function Register({ userType }) {
     }
   }, [loggedIn, navigate, userType]);
 
-  const handleSubmit = async (event) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      password: "",
+    },
+  });
+
+  const handleRegisterSubmit = async (data, errors) => {
     setLoading(true);
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const userDetails = Object.fromEntries(data);
-    await SignUp(userType, userDetails);
+    await SignUp(userType, data);
     setLoading(false);
   };
   return (
@@ -54,10 +66,20 @@ function Register({ userType }) {
         <Typography component="h1" variant="h5">
           Sign up <b>as {userType.toUpperCase()}</b>
         </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <Box
+          component="form"
+          noValidate
+          onSubmit={handleSubmit(handleRegisterSubmit)}
+          sx={{ mt: 3 }}
+        >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
+                {...register("firstName", {
+                  required: "FirstName is required",
+                })}
+                error={!!errors.firstName}
+                helperText={errors.firstName?.message}
                 autoComplete="given-name"
                 name="firstName"
                 required
@@ -69,6 +91,11 @@ function Register({ userType }) {
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
+                {...register("lastName", {
+                  required: "LastName is required",
+                })}
+                error={!!errors.lastName}
+                helperText={errors.lastName?.message}
                 required
                 fullWidth
                 id="lastName"
@@ -79,7 +106,15 @@ function Register({ userType }) {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                required
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                    message: "Invalid email address",
+                  },
+                })}
+                error={!!errors.email}
+                helperText={errors.email?.message}
                 fullWidth
                 id="email"
                 label="Email Address"
@@ -89,6 +124,13 @@ function Register({ userType }) {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                {...register("phone", {
+                  required: "Phone is required",
+                  minLength: 10,
+                  maxLength: 10,
+                })}
+                error={!!errors.phone}
+                helperText={errors.phone?.message}
                 required
                 fullWidth
                 name="phone"
@@ -98,6 +140,11 @@ function Register({ userType }) {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                {...register("password", {
+                  required: true,
+                })}
+                error={!!errors.password}
+                helperText={errors.password?.message}
                 required
                 fullWidth
                 name="password"

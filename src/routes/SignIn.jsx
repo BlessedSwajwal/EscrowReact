@@ -15,12 +15,24 @@ import { Link, useNavigate } from "react-router-dom";
 import { Login } from "../api/consumer";
 import { useAuth } from "../hooks/auth";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
 // eslint-disable-next-line react/prop-types
 export default function SignIn({ userType }) {
   let loggedIn = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
   useEffect(() => {
     if (loggedIn) {
@@ -29,11 +41,11 @@ export default function SignIn({ userType }) {
     }
   }, [loggedIn, navigate, userType]);
 
-  const handleSubmit = async (event) => {
+  const handleLoginSubmit = async (data, event) => {
     setLoading(true);
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    await Login(userType, data.get("email"), data.get("password"));
+    // event.preventDefault();
+    // const data = new FormData(event.currentTarget);
+    await Login(userType, data.email, data.password);
     setLoading(false);
   };
 
@@ -56,8 +68,21 @@ export default function SignIn({ userType }) {
           Sign in{" "}
           {userType == "consumer" ? <b>as Consumer</b> : <b>as Provider</b>}
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box
+          component="form"
+          onSubmit={handleSubmit(handleLoginSubmit)}
+          sx={{ mt: 1 }}
+        >
           <TextField
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                message: "Invalid email address",
+              },
+            })}
+            error={!!errors.email}
+            helperText={errors.email?.message}
             margin="normal"
             required
             fullWidth
@@ -68,6 +93,11 @@ export default function SignIn({ userType }) {
             autoFocus
           />
           <TextField
+            {...register("password", {
+              required: "Password is required",
+            })}
+            error={!!errors.password}
+            helperText={errors.password?.message}
             margin="normal"
             required
             fullWidth
