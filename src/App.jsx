@@ -6,11 +6,15 @@ import Error from "./routes/error";
 import Register from "./routes/Register";
 import { loader as orderLoader } from "./routes/order";
 import { loader as profileLoader } from "./routes/profile";
+import ProviderProfile, {
+  loader as providerLoader,
+} from "./routes/providerProfile";
 
 import ConsumerHome from "./routes/Consumer/ConsumerHome";
 import Order from "./routes/order";
 import Profile from "./routes/profile";
 import ProviderHome from "./routes/providerHome";
+import StripeCallBack from "./routes/stripeCallback";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -53,6 +57,15 @@ const router = createBrowserRouter([
       {
         path: "provider",
         element: <ProviderHome />,
+      },
+      {
+        path: "provider/:providerId",
+        element: <ProviderProfile />,
+        loader: providerLoader,
+      },
+      {
+        path: "stripeCallBack",
+        element: <StripeCallBack />,
       },
     ],
   },

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import orderImg from "../assets/order.jpg";
 import { Box, Button, Modal, TextField, Typography } from "@mui/material";
 import styled from "@emotion/styled";
@@ -211,7 +211,15 @@ function BidComponent({ bid, orderStatus, order }) {
       borderRadius={10}
       mb={2}
     >
-      <Typography>Bidder Id: {bid.bidderId}</Typography>
+      <Typography>
+        Bidder:{" "}
+        <Link
+          style={{ textDecoration: "none", fontSize: "20px" }}
+          to={`/provider/${bid.bidderId}`}
+        >
+          Click for bidder details
+        </Link>
+      </Typography>
       <Typography>Proposed Amount: Rs. {bid.proposedAmount / 100}</Typography>
       <Typography>Comments: {bid.comment}</Typography>
       <Typography>Status: {bid.bidStatus.toUpperCase()}</Typography>
