@@ -143,3 +143,27 @@ export async function createBid(bidRequest) {
     }
   }
 }
+
+export async function markCompleted(orderId) {
+  const selectedOrdersUrl = `${
+    import.meta.env.VITE_API_URL
+  }/Order/MarkCompleted/${orderId}`;
+
+  const headers = {
+    Authorization: `Bearer ${window.localStorage.getItem("auth-token")}`,
+  };
+
+  try {
+    let res = await axios.get(selectedOrdersUrl, { headers });
+    return res.data;
+  } catch (error) {
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      console.log(error.response.data.detail);
+      console.log(error.response.status);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log("Error", error.message);
+    }
+  }
+}

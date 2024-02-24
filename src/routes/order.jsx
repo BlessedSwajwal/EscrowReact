@@ -5,9 +5,9 @@ import { Box, Button, Modal, TextField, Typography } from "@mui/material";
 import styled from "@emotion/styled";
 import axios from "axios";
 import { useState } from "react";
-import { GetPaymentUrl, createBid } from "../api/orders";
+import { GetPaymentUrl, createBid, markCompleted } from "../api/orders";
 import { getUserId, getUserType } from "../api/consumer";
-import { Gavel } from "@mui/icons-material";
+import { Check, Gavel } from "@mui/icons-material";
 
 export async function loader({ params }) {
   const authToken = localStorage.getItem("auth-token");
@@ -20,6 +20,7 @@ export async function loader({ params }) {
       },
     });
     let order = res.data;
+    console.log(order);
     return { order };
   } catch (error) {
     console.log(error);
@@ -34,6 +35,43 @@ function Order() {
     fontSize: 16,
     alignSelf: "flex-start",
   });
+
+  const handleMarkCompleted = async () => {
+    var result = await markCompleted(order.id);
+    if (result == "Done") window.location.reload(true);
+  };
+
+  const StyledButton = styled(Button)({
+    alignSelf: "flex-start",
+    paddingBlock: "10px",
+    paddingInline: "20px",
+    backgroundColor: "green",
+    color: "white",
+    borderRadius: 10,
+    "&:hover": {
+      backgroundColor: "purple",
+    },
+  });
+
+  const MarkCompletedButton = () => (
+    <Button
+      startIcon={<Check />}
+      onClick={handleMarkCompleted}
+      sx={{
+        alignSelf: "flex-start",
+        paddingBlock: "10px",
+        paddingInline: "20px",
+        backgroundColor: "green",
+        color: "white",
+        borderRadius: 10,
+        "&:hover": {
+          backgroundColor: "purple",
+        },
+      }}
+    >
+      Mark Completed
+    </Button>
+  );
 
   // setBids([...order.bids]);
   return (
@@ -68,10 +106,33 @@ function Order() {
         <b>Proposed Time Period: </b>
         {order.allowedDays} days
       </StyledText>
+      {order.orderStatus == "marked fulfilled" ? (
+        <StyledText>
+          <b>Completed date: </b>
+          {order.completionDate}
+        </StyledText>
+      ) : (
+        <></>
+      )}
       <StyledText>
         <b>No. of bids: </b>
         {order.bids.length}
       </StyledText>
+
+      {CheckIfCanAcceptOrDispute(order) && (
+        <Box
+          width="auto"
+          alignSelf="flex-start"
+          sx={{ display: "flex", gap: "3px" }}
+        >
+          <StyledButton>Verify Completion</StyledButton>
+          <StyledButton style={{ backgroundColor: "red" }}>
+            Dispute
+          </StyledButton>
+        </Box>
+      )}
+
+      {CheckIfCanComplete(order) ? <MarkCompletedButton /> : <></>}
       {CheckIfCanBid(order) ? (
         <CreateBidButton setModalOpen={setModalOpen} />
       ) : (
@@ -103,6 +164,18 @@ function Order() {
       </Box>
     </Box>
   );
+}
+
+function CheckIfCanAcceptOrDispute(order) {
+  if (order.creatorId != getUserId()) return false;
+  if (order.orderStatus != "marked fulfilled") return false;
+  return true;
+}
+
+function CheckIfCanComplete(order) {
+  if (order.orderStatus != "processing") return false;
+  if (order.providerId != getUserId()) return false;
+  return true;
 }
 
 function CheckIfCanBid(order) {

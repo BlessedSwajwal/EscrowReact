@@ -31,7 +31,13 @@ function ConsumerHome() {
         setFilteredOrders(orders.filter((o) => o.orderStatus == "created"));
         break;
       case "processing":
-        setFilteredOrders(orders.filter((o) => o.orderStatus == "processing"));
+        setFilteredOrders(
+          orders.filter(
+            (o) =>
+              o.orderStatus == "processing" ||
+              o.orderStatus == "marked fulfilled"
+          )
+        );
         break;
       case "completed":
         setFilteredOrders(orders.filter((o) => o.orderStatus == "completed"));

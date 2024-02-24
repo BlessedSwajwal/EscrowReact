@@ -10,9 +10,12 @@ function LandingPage() {
   const navigate = useNavigate();
   useEffect(() => {
     if (isLoggedIn) {
-      getUserType == "consumer" ? navigate("/Consumer") : navigate("/Provider");
+      console.log(getUserType());
+      getUserType() == "consumer"
+        ? navigate("/Consumer")
+        : navigate("/Provider");
     }
-  });
+  }, [isLoggedIn, navigate]);
   return (
     <>
       <MainPageContainer />
