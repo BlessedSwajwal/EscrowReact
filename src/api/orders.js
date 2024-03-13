@@ -167,3 +167,55 @@ export async function markCompleted(orderId) {
     }
   }
 }
+
+//VerifyOrderCompletion/{{OrderId}}
+export async function verifyOrderCompletion(orderId) {
+  console.log(orderId);
+  const selectedOrdersUrl = `${
+    import.meta.env.VITE_API_URL
+  }/Order/VerifyOrderCompletion/${orderId}`;
+
+  const headers = {
+    Authorization: `Bearer ${window.localStorage.getItem("auth-token")}`,
+  };
+
+  try {
+    let res = await axios.get(selectedOrdersUrl, { headers });
+    return res.data;
+  } catch (error) {
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      console.log(error.response.data.detail);
+      console.log(error.response.status);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log("Error", error.message);
+    }
+  }
+}
+
+//{{Address}}/{{OrderId}}/rate?RatingCount=9
+export async function rateOrder(orderId, ratingCount) {
+  const selectedOrdersUrl = `${
+    import.meta.env.VITE_API_URL
+  }/Order/${orderId}/rate?RatingCount=${ratingCount}`;
+
+  const headers = {
+    Authorization: `Bearer ${window.localStorage.getItem("auth-token")}`,
+  };
+
+  try {
+    let res = await axios.get(selectedOrdersUrl, { headers });
+    location.reload();
+    return res.data;
+  } catch (error) {
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      console.log(error.response.data.detail);
+      console.log(error.response.status);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log("Error", error.message);
+    }
+  }
+}

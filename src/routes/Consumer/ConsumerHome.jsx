@@ -42,6 +42,11 @@ function ConsumerHome() {
       case "completed":
         setFilteredOrders(orders.filter((o) => o.orderStatus == "completed"));
         break;
+      case "fulfilled":
+        setFilteredOrders(
+          orders.filter((o) => o.orderStatus == "marked fulfilled")
+        );
+        break;
       case "disputed":
         setFilteredOrders(orders.filter((o) => o.orderStatus == "disputed"));
         break;
@@ -103,6 +108,7 @@ function ConsumerHome() {
         >
           <ToggleButton value="pending">Pending</ToggleButton>
           <ToggleButton value="processing">Processing</ToggleButton>
+          <ToggleButton value="fulfilled">Fulfilled</ToggleButton>
           <ToggleButton value="completed">Completed</ToggleButton>
           <ToggleButton value="disputed">Disputed</ToggleButton>
         </ToggleButtonGroup>

@@ -1,17 +1,7 @@
+/* eslint-disable react/prop-types */
 import { Box, Paper, Typography } from "@mui/material";
 import styled from "@emotion/styled";
 
-// {
-//     "id": "36597a2a-199a-40a6-8d65-b90bf8611dd7",
-//     "firstName": "Ken",
-//     "lastName": "Adams",
-//     "email": "test@provider.com",
-//     "mobileNo": "9845209080",
-//     "userType": "PROVIDER",
-//     "totalOrderCount": 1,
-//     "avgRating": 0,
-//     "ratingCount": 0
-// }
 export function UserDetailContainer({ user }) {
   const StyledLabel = styled("b")({
     fontWeight: "bold",

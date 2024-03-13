@@ -2,10 +2,17 @@
 import { Link, useLoaderData } from "react-router-dom";
 import orderImg from "../assets/order.jpg";
 import { Box, Button, Modal, TextField, Typography } from "@mui/material";
+import { Rating } from "primereact/rating";
 import styled from "@emotion/styled";
 import axios from "axios";
 import { useState } from "react";
-import { GetPaymentUrl, createBid, markCompleted } from "../api/orders";
+import {
+  GetPaymentUrl,
+  createBid,
+  markCompleted,
+  rateOrder,
+  verifyOrderCompletion,
+} from "../api/orders";
 import { getUserId, getUserType } from "../api/consumer";
 import { Check, Gavel } from "@mui/icons-material";
 
@@ -30,6 +37,7 @@ function Order() {
   const [modalOpen, setModalOpen] = useState(false);
   const { order } = useLoaderData();
   const [bids, setBids] = useState(order.bids);
+  const [rating, setRating] = useState(0);
   const StyledText = styled(Typography)({
     component: "p",
     fontSize: 16,
@@ -125,7 +133,9 @@ function Order() {
           alignSelf="flex-start"
           sx={{ display: "flex", gap: "3px" }}
         >
-          <StyledButton>Verify Completion</StyledButton>
+          <StyledButton onClick={() => verifyOrderCompletion(order.id)}>
+            Verify Completion
+          </StyledButton>
           <StyledButton style={{ backgroundColor: "red" }}>
             Dispute
           </StyledButton>
@@ -137,6 +147,24 @@ function Order() {
         <CreateBidButton setModalOpen={setModalOpen} />
       ) : (
         ""
+      )}
+      {CheckIfCanRate(order) ? (
+        <Box display="flex" gap={4} alignItems="center">
+          <Typography variant="h6">Rate: </Typography>
+          <Rating
+            value={rating}
+            onChange={(e) => setRating(e.value)}
+            stars={10}
+          />
+          <StyledButton
+            style={{ backgroundColor: "green" }}
+            onClick={() => rateOrder(order.id, rating)}
+          >
+            Rate
+          </StyledButton>
+        </Box>
+      ) : (
+        <></>
       )}
       <CreateBidModal
         modalOpen={modalOpen}
@@ -187,6 +215,21 @@ function CheckIfCanBid(order) {
   if (order.bids.length == 0) return true;
   //Check if already bidded by the user
   if (order.bids.find((b) => b.bidderId == getUserId())) return false;
+  return true;
+}
+
+function CheckIfCanRate(order) {
+  if (getUserId() !== order.creatorId) {
+    return false;
+  }
+  if (order.rated == true) return false;
+  if (
+    order.orderStatus != "completed" &&
+    order.orderStatus != "marked fulfilled" &&
+    order.orderStatus != "paid"
+  ) {
+    return false;
+  }
   return true;
 }
 
