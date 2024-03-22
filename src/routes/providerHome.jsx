@@ -163,7 +163,6 @@ function OrderTabs({ activeIndex, setActiveIndex }) {
         onClick={options.onClick}
         style={{
           ...styles,
-          backgroundColor: activeIndex == 0 ? "green" : "",
         }}
       >
         <Typography fontSize={20} fontWeight={600}>
@@ -178,7 +177,6 @@ function OrderTabs({ activeIndex, setActiveIndex }) {
         onClick={options.onClick}
         style={{
           ...styles,
-          backgroundColor: activeIndex == 1 ? "green" : "",
         }}
       >
         <Typography fontSize={20} fontWeight={600}>
@@ -224,8 +222,8 @@ function OrderTabs({ activeIndex, setActiveIndex }) {
     >
       <TabPanel header="Bid on Orders" headerTemplate={tab1Style}></TabPanel>
       <TabPanel headerTemplate={tab2Style} header="Your Orders"></TabPanel>
-      <TabPanel headerTemplate={tab3Style} header="Completed Orders"></TabPanel>
-      <TabPanel headerTemplate={tab4Style} header="Disputed Orders"></TabPanel>
+      {/* <TabPanel headerTemplate={tab3Style} header="Completed Orders"></TabPanel>
+      <TabPanel headerTemplate={tab4Style} header="Disputed Orders"></TabPanel> */}
     </TabView>
   );
 }
