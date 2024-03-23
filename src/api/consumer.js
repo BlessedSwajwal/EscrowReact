@@ -15,6 +15,8 @@ export async function Login(userType, email, password) {
       res = await axios.post(`${apiUrl}/Consumer/login`, loginData);
     if (userType == "provider")
       res = await axios.post(`${apiUrl}/Provider/login`, loginData);
+    if (userType == "admin")
+      res = await axios.post(`${apiUrl}/Admin/login`, loginData);
     localStorage.setItem("auth-token", res.data.token);
     window.dispatchEvent(new Event("storage"));
     //console.log(res);

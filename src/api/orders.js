@@ -121,6 +121,78 @@ export async function GetAllSelectedOrders() {
   }
 }
 
+export async function GetAllDisputedOrders() {
+  //Url and headers setup
+  const disputedOrdersUrl = `${
+    import.meta.env.VITE_API_URL
+  }/Admin/DisputedOrders`;
+  const headers = {
+    Authorization: `Bearer ${window.localStorage.getItem("auth-token")}`,
+  };
+
+  try {
+    let res = await axios.get(disputedOrdersUrl, { headers });
+    return res.data;
+  } catch (error) {
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      console.log(error.response.data.detail);
+      console.log(error.response.status);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log("Error", error.message);
+    }
+  }
+}
+
+export async function raiseDispute(orderId) {
+  const url = `${import.meta.env.VITE_API_URL}/Order/RaiseDispute/${orderId}`;
+
+  const headers = {
+    Authorization: `Bearer ${window.localStorage.getItem("auth-token")}`,
+  };
+
+  try {
+    let res = await axios.get(url, { headers });
+    location.reload();
+    return res.data;
+  } catch (error) {
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      console.log(error.response.data.detail);
+      console.log(error.response.status);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log("Error", error.message);
+    }
+  }
+}
+
+export async function markOrderPaid(orderId) {
+  const url = `${
+    import.meta.env.VITE_API_URL
+  }/Admin/MarkOrderPaid?orderId=${orderId}`;
+
+  const headers = {
+    Authorization: `Bearer ${window.localStorage.getItem("auth-token")}`,
+  };
+
+  try {
+    let res = await axios.get(url, { headers });
+    location.reload();
+    return res.data;
+  } catch (error) {
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      console.log(error.response.data.detail);
+      console.log(error.response.status);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log("Error", error.message);
+    }
+  }
+}
+
 export async function createBid(bidRequest) {
   const selectedOrdersUrl = `${
     import.meta.env.VITE_API_URL

@@ -38,6 +38,7 @@ export default function SignIn({ userType }) {
     if (loggedIn) {
       if (userType == "consumer") navigate("/Consumer");
       if (userType == "provider") navigate("/Provider");
+      if (userType == "admin") navigate("/Admin");
     }
   }, [loggedIn, navigate, userType]);
 
@@ -66,7 +67,13 @@ export default function SignIn({ userType }) {
         {/* {userType == "consumer" ? } */}
         <Typography component="h1" variant="h5">
           Sign in{" "}
-          {userType == "consumer" ? <b>as Consumer</b> : <b>as Provider</b>}
+          {userType == "consumer" ? (
+            <b>as Consumer</b>
+          ) : userType == "provider" ? (
+            <b>as Provider</b>
+          ) : (
+            <b>as Admin</b>
+          )}
         </Typography>
         <Box
           component="form"
@@ -123,21 +130,26 @@ export default function SignIn({ userType }) {
           >
             Sign In
           </Button>
-
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
+          {userType != "admin" ? (
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link
+                  to={
+                    userType == "consumer" ? "/register" : "/provider-register"
+                  }
+                >
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Link
-                to={userType == "consumer" ? "/register" : "/provider-register"}
-              >
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
+          ) : (
+            <></>
+          )}
         </Box>
       </Box>
       <Copyright sx={{ mt: 8, mb: 4 }} />

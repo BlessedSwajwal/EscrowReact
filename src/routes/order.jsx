@@ -10,6 +10,8 @@ import {
   GetPaymentUrl,
   createBid,
   markCompleted,
+  markOrderPaid,
+  raiseDispute,
   rateOrder,
   verifyOrderCompletion,
 } from "../api/orders";
@@ -127,6 +129,30 @@ function Order() {
         {order.bids.length}
       </StyledText>
 
+      {CheckIfCanResolve(order) && (
+        <Box
+          width="auto"
+          alignSelf="flex-start"
+          sx={{ display: "flex", gap: "3px" }}
+        >
+          <StyledButton onClick={() => markOrderPaid(order.id)}>
+            Resolve Order
+          </StyledButton>
+        </Box>
+      )}
+
+      {CheckIfCanPay(order) && (
+        <Box
+          width="auto"
+          alignSelf="flex-start"
+          sx={{ display: "flex", gap: "3px" }}
+        >
+          <StyledButton onClick={() => markOrderPaid(order.id)}>
+            Disburse Payment
+          </StyledButton>
+        </Box>
+      )}
+
       {CheckIfCanAcceptOrDispute(order) && (
         <Box
           width="auto"
@@ -136,7 +162,10 @@ function Order() {
           <StyledButton onClick={() => verifyOrderCompletion(order.id)}>
             Verify Completion
           </StyledButton>
-          <StyledButton style={{ backgroundColor: "red" }}>
+          <StyledButton
+            style={{ backgroundColor: "red" }}
+            onClick={() => raiseDispute(order.id)}
+          >
             Dispute
           </StyledButton>
         </Box>
@@ -197,6 +226,18 @@ function Order() {
 function CheckIfCanAcceptOrDispute(order) {
   if (order.creatorId != getUserId()) return false;
   if (order.orderStatus != "marked fulfilled") return false;
+  return true;
+}
+
+function CheckIfCanResolve(order) {
+  if (order.orderStatus != "disputed") return false;
+  if (getUserType() != "admin") return false;
+  return true;
+}
+
+function CheckIfCanPay(order) {
+  if (order.orderStatus != "completed") return false;
+  if (getUserType() != "admin") return false;
   return true;
 }
 

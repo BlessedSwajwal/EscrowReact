@@ -13,7 +13,9 @@ function LandingPage() {
       console.log(getUserType());
       getUserType() == "consumer"
         ? navigate("/Consumer")
-        : navigate("/Provider");
+        : getUserType() == "provider"
+        ? navigate("/Provider")
+        : navigate("/admin");
     }
   }, [isLoggedIn, navigate]);
   return (

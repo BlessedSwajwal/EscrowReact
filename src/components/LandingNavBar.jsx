@@ -83,7 +83,9 @@ function LandingNavBar() {
   const redirectUrl = isLoggedIn
     ? getUserType() == "provider"
       ? "/Provider"
-      : "/Consumer"
+      : getUserType() == "consumer"
+      ? "/Consumer"
+      : "/Admin"
     : "/";
 
   return (
