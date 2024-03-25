@@ -216,6 +216,7 @@ function Order() {
             bid={b}
             orderStatus={order.orderStatus}
             order={order}
+            recommendedBid={order.recommendedBid}
           />
         ))}
       </Box>
@@ -354,11 +355,16 @@ function CreateBidButton({ setModalOpen }) {
   );
 }
 
-function BidComponent({ bid, orderStatus, order }) {
+function BidComponent({ bid, orderStatus, order, recommendedBid }) {
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
   function handlePayClicked() {
     setPaymentModalOpen(true);
   }
+
+  const isRecommended =
+    getUserType() == "consumer" &&
+    order.orderStatus == "created" &&
+    bid.bidId == recommendedBid;
   return (
     <Box
       key={bid.bidId}
@@ -367,6 +373,7 @@ function BidComponent({ bid, orderStatus, order }) {
       p={3}
       borderRadius={10}
       mb={2}
+      bgcolor={isRecommended ? "green" : ""}
     >
       <Typography>
         Bidder:{" "}
@@ -386,7 +393,7 @@ function BidComponent({ bid, orderStatus, order }) {
           onClick={handlePayClicked}
           variant="filled"
           sx={{
-            backgroundColor: "green",
+            backgroundColor: isRecommended ? "black" : "green",
             color: "white",
             "&:hover": {
               backgroundColor: "purple",

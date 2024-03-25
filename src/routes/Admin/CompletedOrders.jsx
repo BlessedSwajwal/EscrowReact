@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Box, Button, Typography } from "@mui/material";
 import axios from "axios";
 import { useLoaderData, useNavigate } from "react-router-dom";
