@@ -27,7 +27,7 @@ function MainPageContainer() {
           fontWeight={600}
           color={"white"}
         >
-          Buy with confidence, Sell with assurance
+          From anywhere, At anytime
         </Typography>
         <Typography
           fontFamily="Work Sans"

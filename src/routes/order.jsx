@@ -378,7 +378,7 @@ function BidComponent({ bid, orderStatus, order, recommendedBid }) {
       <Typography>
         Bidder:{" "}
         <Link
-          style={{ textDecoration: "none", fontSize: "20px" }}
+          style={{ textDecoration: "none", fontSize: "20px", color: "orange" }}
           to={`/provider/${bid.bidderId}`}
         >
           Click for bidder details

@@ -42,15 +42,13 @@ function CardContainer() {
       />
       <CardItem
         heading="Work with the best"
-        description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore ea deserunt incidunt, 
-        consectetur perspiciatis ad eos praesentium excepturi, autem accusantium id ratione? "
+        description="Providers all over the globe use our platform. Find the best among all the workforce. Never compromise on quality. We have the pool of best workers for you at your fingertips."
         image={freelance}
       />
 
       <CardItem
-        heading="Global Talents"
-        description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore ea deserunt incidunt, 
-        consectetur perspiciatis ad eos praesentium excepturi, autem accusantium id ratione?"
+        heading="Creative Ideas"
+        description="Turn the ideas of your dreams into reality. From ideas to concrete tasks on the real world, we make it happen. We provide the platform for our users to do just that."
         image={business}
       />
     </Grid>
