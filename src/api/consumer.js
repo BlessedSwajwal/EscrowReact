@@ -43,6 +43,7 @@ export async function SignUp(userType, userDetails) {
       res = await axios.post(`${apiUrl}/Consumer/register`, userDetails);
     if (userType == "provider")
       res = await axios.post(`${apiUrl}/Provider/register`, userDetails);
+
     localStorage.setItem("auth-token", res.data.token);
     window.dispatchEvent(new Event("storage"));
     console.log(res);

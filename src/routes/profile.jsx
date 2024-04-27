@@ -7,6 +7,7 @@ import { useLoaderData } from "react-router-dom";
 export async function loader() {
   const userType = getUserType();
   let user = await getUserDetails(userType);
+  console.log(user);
   return { user };
 }
 
@@ -78,6 +79,18 @@ function UserDetailContainer({ user }) {
           <StyledLabel> User Type: </StyledLabel>
           {user.userType}
         </Typography>
+        {user.userType == "CONSUMER" && (
+          <>
+            <Typography display="flex" flexWrap="wrap" fontSize={20}>
+              <StyledLabel> Low cost preference: </StyledLabel>
+              {user.lowCostPref}
+            </Typography>
+            <Typography display="flex" flexWrap="wrap" fontSize={20}>
+              <StyledLabel> Trust preference: </StyledLabel>
+              {user.trustPref}
+            </Typography>
+          </>
+        )}
         <Typography display="flex" flexWrap="wrap" fontSize={20}>
           <StyledLabel> Total Orders: </StyledLabel>
           {user.totalOrderCount}

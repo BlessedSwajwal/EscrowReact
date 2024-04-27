@@ -8,6 +8,7 @@ import {
   CssBaseline,
   FormControlLabel,
   Grid,
+  Slider,
   TextField,
   Typography,
 } from "@mui/material";
@@ -17,12 +18,16 @@ import { useAuth } from "../hooks/auth";
 import { useEffect, useState } from "react";
 import { SignUp } from "../api/consumer";
 import { useForm } from "react-hook-form";
+import PreferenceSelection from "../components/PreferenceSelection";
 
 // eslint-disable-next-line react/prop-types
 function Register({ userType }) {
   let loggedIn = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+
+  const [costPref, setCostPref] = useState(50);
+  const [trustPref, setTrustPref] = useState(50);
 
   useEffect(() => {
     if (loggedIn) {
@@ -46,9 +51,24 @@ function Register({ userType }) {
 
   const handleRegisterSubmit = async (data, errors) => {
     setLoading(true);
+    if (userType == "consumer") {
+      data = {
+        ...data,
+        lowCostPref: costPref,
+        trustPref: trustPref,
+      };
+    }
     await SignUp(userType, data);
     setLoading(false);
   };
+
+  const handleChange = (event, newValue) => {
+    setCostPref(newValue);
+  };
+  const handleTrustChange = (event, newValue) => {
+    setTrustPref(newValue);
+  };
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -154,6 +174,31 @@ function Register({ userType }) {
                 autoComplete="new-password"
               />
             </Grid>
+            {userType == "consumer" && (
+              <Box mt={2} width="100%">
+                <Typography>Low Cost Preferences: </Typography>
+                <Slider
+                  sx={{
+                    flexGrow: 1,
+                  }}
+                  defaultValue={costPref}
+                  aria-label="Default"
+                  valueLabelDisplay="auto"
+                  onChange={handleChange}
+                />
+
+                <Typography>Trust Preferences: </Typography>
+                <Slider
+                  sx={{
+                    flexGrow: 1,
+                  }}
+                  defaultValue={trustPref}
+                  aria-label="Default"
+                  valueLabelDisplay="auto"
+                  onChange={handleTrustChange}
+                />
+              </Box>
+            )}
             <Grid item xs={12}>
               <FormControlLabel
                 control={<Checkbox value="allowExtraEmails" color="primary" />}
